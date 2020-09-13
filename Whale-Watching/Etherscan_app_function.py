@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[8]:
-
-
 import requests
 import pandas as pd
 import json
@@ -26,15 +20,11 @@ final_price = pd.read_csv("final_price.csv")
 uniswap_addresses = pd.read_csv("uni.csv") 
 
 
-#df_price = pd.read_csv("price_day2.csv") 
-#df_price['time_h']=df_price['time']/86400000
-#final_price = df_price.loc[df_price['time_h']==18485]
 
-
-# In[295]:
 @st.cache
 def uniswap(address,df_price,final_price,uniswap_addresses):
-    response = requests.get('http://api.etherscan.io/api?module=account&action=tokentx&address='+address+'&startblock=0&endblock=999999999&sort=asc&apikey=RU3A9AQFZ64TTX7WS16YMEJUQRX6YAWG1W')
+    apikey = 'xxxxxxxxxxxxxxxxxxxxxxxx'
+    response = requests.get('http://api.etherscan.io/api?module=account&action=tokentx&address='+address+'&startblock=0&endblock=999999999&sort=asc&apikey='+apikey)
     data = response.json()
     keys = [*data['result'][0]]
     df = pd.DataFrame(columns=keys, )
@@ -100,8 +90,7 @@ def uniswap(address,df_price,final_price,uniswap_addresses):
     'input_': input_,
     'confirmations': confirmations})
     
-    
-    #uniswap_addresses = pd.read_csv("uni.csv") 
+
     
     
     df = df.assign(buy=0)
@@ -140,21 +129,12 @@ def uniswap(address,df_price,final_price,uniswap_addresses):
     for coin in portfolio:
         index_lag = df_cc.loc[df_cc['symbol'] == coin].head(1).index
         for index, row in df_cc.loc[df_cc['symbol'] == coin].iterrows():
-            #p = p + 1
-            #print(row.symbol)
-            #print(df_cc.test[index])
-            #print(index_lag)
-
-            #df_cc.at[index,'test'] = p
-
 
             if row.buy == 1:
                 df_cc.at[index,'invent'] = df_cc.invent[index_lag] + row.amount
                 df_cc.at[index,'bought'] = row.amount
             if row.sell == 1:
-                # invent is always zero!!
-                #if df_cc.invent[index_lag] > row.amount:
-                #print(float(df_cc.invent[index_lag]))
+
                 if float(df_cc.invent[index_lag]) > row.amount:
 
                     df_cc.at[index,'sold'] = row.amount
@@ -236,41 +216,11 @@ def uniswap(address,df_price,final_price,uniswap_addresses):
     return(df_wallet,df_final,df_dd)
 
 
-# In[ ]:
-
-
-
-
-
-# In[58]:
-
-
-# get list
-
-
-# In[23]:
-
-
-holders = pd.read_csv("dext_holders.csv") 
-
-
-# In[24]:
-
-
-dext_addresses = holders['HolderAddress']
 default_value_goes_here = '0x1dcd52425f559ea602333f28c87f034b27c29526'
 
 
 user_input = st.text_input("label goes here", default_value_goes_here)
 
-
-#address = st.sidebar.selectbox(
-#    'Address',
-#     holders['HolderAddress'])
-#
-#'Address:', address
-
-# In[318]:
 
 
 show = uniswap(user_input,df_price,final_price,uniswap_addresses)[1]
@@ -278,67 +228,37 @@ st.dataframe(show.sort_values(by=['profit'], ascending = False))
 
 coins1 = show.coin.unique()
 coins_plot = st.sidebar.selectbox('Coin',coins1)
-# In[306]:
+
 
 
 ad=uniswap(user_input,df_price,final_price,uniswap_addresses)[2]
 
 
-# In[307]:
-
-
 filter_coin = coins_plot
-
-
-# In[309]:
 
 
 close = df_price.loc[df_price['symbol']==filter_coin][['time_h','coin_price']]
 
 
-# In[310]:
-
-
 close = close.reset_index()
-
-
-# In[311]:
 
 
 test2 = ad.loc[(ad['symbol']==filter_coin) & (ad['buy']==1)][['buy','time_h']]
 
 
-# In[312]:
-
-
 test22 = ad.loc[(ad['symbol']==filter_coin) & (ad['sell']==1)][['sell','time_h']]
-
-
-# In[313]:
 
 
 test3 = close.merge(test2, how = 'left',on=['time_h'])
 
 
-# In[314]:
-
-
 test4 = test3.merge(test22, how = 'left',on=['time_h'])
-
-
-# In[315]:
 
 
 states_sell = list(test4.loc[test4['sell']==1].index)
 
 
-# In[316]:
-
-
 states_buy = list(test4.loc[test4['buy']==1].index)
-
-
-# In[323]:
 
 
 plt.figure(figsize = (2, 1))
@@ -350,27 +270,9 @@ plt.yticks([])
 st.pyplot()
 
 
-
-# In[320]:
-
-
-#uniswap(dext_addresses[133],df_price,final_price,uniswap_addresses)[2]
-
-
-# In[322]:
-
-
-#ad.loc[(ad['symbol']==filter_coin)]
-
-
-# In[326]:
-
 show2 = uniswap(user_input,df_price,final_price,uniswap_addresses)[2]
 st.dataframe(show2.loc[(show2['symbol']==filter_coin)])
 
-
-
-# In[ ]:
 
 
 
