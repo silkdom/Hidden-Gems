@@ -27,5 +27,37 @@ The workflow for the generation of tattoo design ideas can be broken into 3 sect
 TBC. 
 
 ```python
-temp python code
+# Run if want fresh listings
+
+factory = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
+topic0 = '0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9'
+blockchain = list(range(10000000,11100000,10000))
+# last block on last run --- August 15th ~ 10620088
+uniswap_addresses = []
+
+for block in blockchain:
+    block2 = str(block+10000)
+    block1 = str(block)
+    print(block)
+    tt.sleep(3)
+    
+    call = 'https://api.etherscan.io/api?module=logs&action=getLogs&fromBlock='+block1+'&toBlock='+block2+'&address='+factory+'&topic0='+topic0+'&apikey=RU3A9AQFZ64TTX7WS16YMEJUQRX6YAWG1W'
+    response = requests.get(call)
+    logs = response.json()
+    
+    addresses = []
+    for log in range(len(logs['result'])):
+        addresses.append(logs['result'][log]['data'])
+    
+    addresses2 = []
+    for a in range(len(addresses)):
+        s = '0x'+addresses[a][26:]
+        addresses2.append(s)
+    
+    addresses3 = []
+    for a in range(len(addresses2)):
+        s = addresses2[a][:-64]
+        addresses3.append(s)
+    
+    uniswap_addresses.extend(addresses3)
 ```
