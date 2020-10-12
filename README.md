@@ -102,3 +102,8 @@ for u in uniswap['0']:
 
 [Performance Notebook](z)
 
+Now that that the Uniswap contracts and the users that interact with them are known, the performance of the userbase can be analayzed. However, in order to do this, price data must also be pulled as it is not avaiable via the ethereum tracactional data stream. Thankfully it is an easy pull, via the CoinGecko API. For this project the top 1000 coin hourly price data is deemed sufficient. The time stamps of this price data can be later joined to the tranactional data providing a basis for perfromance analysis. 
+
+The performance mega function combines the data streams and aggregates to both customer/coin and customer levels. This achieved by 
+
+
