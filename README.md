@@ -24,7 +24,7 @@ The workflow for the generation of tattoo design ideas can be broken into 3 sect
 ### Wallet Identification
 [Notebook](https://github.com/silkdom/Hidden-Gems/blob/master/Whale-Watching/Etherscan_app_function.py)
 
-TBC. 
+In order to determine a traders performance it is neccisary to see if they are buying/selling coins, or just moving them to another wallet on the blockchain. This can be done by identifying the token contracts used for exchange on the Uniswap protocal. These contracts were initially difficult to compile, but thankfully could be determined from the logs of the Uniswap factory contract. At time of writing there were 13,344 unique exchange pairs.
 
 ```python
 # Run if want fresh listings
@@ -60,4 +60,36 @@ for block in blockchain:
         addresses3.append(s)
     
     uniswap_addresses.extend(addresses3)
+```
+
+Now that the exchnage pair contracts are known, only the transactions that interact with the associated addresses are analyzed. Next step is to identify the user wallet addresses that exchnage with these contracts. This will become our userbase to later narrow down the best traders. At time of writing there were more than 100,000 active wallets. 
+
+```python
+# Run if want fresh user wallet addresses
+
+wallet_addresses = []
+k = 0
+j = 0
+for u in uniswap['0']:
+    if k % 8 ==0:
+        tt.sleep(1)
+    k += 1
+    print(k)
+    
+    try:
+        wallets = requests.get('http://api.etherscan.io/api?module=account&action=tokentx&address='+u+'&startblock=0&endblock=999999999&sort=asc&apikey=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+        wallets = wallets.json()
+
+        addresses = []
+        for i in range(len(wallets['result'])):
+            addresses.append(wallets['result'][i]['to'])
+            addresses.append(wallets['result'][i]['from'])
+
+        wallet_addresses.extend(addresses)
+        wallet_addresses = list(set(wallet_addresses))
+        
+    except:
+        j += 1
+        print('Error #'+str(j))
+        pass
 ```
