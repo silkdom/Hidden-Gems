@@ -107,3 +107,5 @@ Now that that the Uniswap contracts and the users that interact with them are kn
 The performance mega function combines the data streams and aggregates to both customer/coin and customer levels. This achieved by 
 
 
+
+
