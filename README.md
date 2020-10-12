@@ -21,8 +21,10 @@ The workflow for the generation of tattoo design ideas can be broken into 3 sect
 - Wallet Analysis
 - Wallet Tracking
 
+Data is sourced from the Etherscan and CoinGecko Api's. Periodic sleep functions are implemented to abide by their rate call limits. Documentation can be found here; [Etherscan](https://etherscan.io/apis), [CoinGecko](https://www.coingecko.com/en/api)
+
 ### Wallet Identification
-[Notebook](https://github.com/silkdom/Hidden-Gems/blob/master/Whale-Watching/Etherscan_app_function.py)
+[Contract & Address Notebook](x)
 
 In order to determine a traders performance it is neccisary to see if they are buying/selling coins, or just moving them to another wallet on the blockchain. This can be done by identifying the token contracts used for exchange on the Uniswap protocal. These contracts were initially difficult to compile, but thankfully could be determined from the logs of the Uniswap factory contract. At time of writing there were 13,344 unique exchange pairs.
 
@@ -93,3 +95,10 @@ for u in uniswap['0']:
         print('Error #'+str(j))
         pass
 ```
+
+
+### Wallet Analysis
+[Price Notebook](y)
+
+[Performance Notebook](z)
+
