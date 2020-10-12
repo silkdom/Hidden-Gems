@@ -41,7 +41,7 @@ for block in blockchain:
     print(block)
     tt.sleep(3)
     
-    call = 'https://api.etherscan.io/api?module=logs&action=getLogs&fromBlock='+block1+'&toBlock='+block2+'&address='+factory+'&topic0='+topic0+'&apikey=RU3A9AQFZ64TTX7WS16YMEJUQRX6YAWG1W'
+    call = 'https://api.etherscan.io/api?module=logs&action=getLogs&fromBlock='+block1+'&toBlock='+block2+'&address='+factory+'&topic0='+topic0+'&apikey='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
     response = requests.get(call)
     logs = response.json()
     
