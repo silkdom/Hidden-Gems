@@ -298,4 +298,12 @@ def uniswap(address,df_price,final_price,uniswap_addresses):
     return(df_wallet,df_final,df_dd)
 ```
 
+We can now apply the function to the addresses of the Uniswap protocall. So that no stone is left unturned, all 100,000+ users are ran through the function, and their high level performance metrics are recorded. The final part of the project, is to dive deeper into the biggest winners identified in this section, and develop a method to tracking their future transactions. 
 
+### Wallet Tracking
+
+[Interactive Tracking #1](https://github.com/silkdom/Hidden-Gems/blob/master/Whale-Watching/Etherscan_app_function.py)
+
+[Interactive Tracking #2](https://github.com/silkdom/Hidden-Gems/blob/master/Whale-Watching/whale_hunt.py)
+
+[Telegram Bot](https://github.com/silkdom/Hidden-Gems/blob/master/heroku.py)
