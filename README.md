@@ -64,10 +64,6 @@ for block in blockchain:
     uniswap_addresses.extend(addresses3)
 ```
 
-<p align="center">
-  <img src="https://github.com/silkdom/Hidden-Gems/blob/master/img/Etherscan_factory.png?raw=true" alt="uniswap"/>
-</p>
-
 Now that the exchnage pair contracts are known, only the transactions that interact with the associated addresses are analyzed. Next step is to identify the user wallet addresses that exchnage with these contracts. This will become our userbase to later narrow down the best traders. At time of writing there were more than 100,000 active wallets. 
 
 ```python
@@ -107,7 +103,7 @@ for u in uniswap['0']:
 
 Now that that the Uniswap contracts and the users that interact with them are known, the performance of the userbase can be analayzed. However, in order to do this, price data must also be pulled as it is not avaiable via the ethereum tracactional data stream. Thankfully it is an easy pull, via the CoinGecko API. For this project the top 1000 coin hourly price data is deemed sufficient. The time stamps of this price data can be later joined to the tranactional data providing a basis for perfromance analysis. 
 
-The performance mega function combines the data streams and aggregates to both customer/coin and customer levels. This achieved by 
+The performance mega function, uniswap() combines the data streams and aggregates to both customer/coin and customer levels. This achieved by first using the Etherscan API to pull all of the addresses ERC-20 token transactions. These transactions are then compared to the contract addresses above to detrmine if the transaction was an exchange on the uniswap portocall ('to' = sell, 'from' = buy). The price data is then merged to the transactions on the rounded (to nearest hour) timestamps and coin ticker (i.e. Btc, Eth, etc.). Metrics such as inventory, remaining, and salvage are introduced to ensure that performance can be assessed legitimately over the blockchain snapshot. The transactions are then aggregated by coin ticker, and evaluation metrics such as profit and ROI are computed on a coin basis. The aggregation is then done again on a total portfolio basis, and the two perfomance tables are returned from the function. 
 
 ```python
 def uniswap(address,df_price,final_price,uniswap_addresses):
@@ -177,9 +173,7 @@ def uniswap(address,df_price,final_price,uniswap_addresses):
     'cumulativeGasUsed': cumulativeGasUsed,
     'input_': input_,
     'confirmations': confirmations})
-    
-
-    
+ 
     
     df = df.assign(buy=0)
     df = df.assign(sell=0)
